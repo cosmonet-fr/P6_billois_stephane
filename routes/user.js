@@ -1,32 +1,9 @@
-console.log("run user.js");
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
-const userSchema = mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-});
-
-userSchema.plugin(uniqueValidator);
-
-module.exports = mongoose.model('User', userSchema);
-
-
-
-
 const express = require('express');
-
 const router = express.Router();
 
-router.use((req, res) => {
+const userCtrl = require('../controllers/user.js');
 
-    res.json({
-        userId: "id",
-        email: "test@mail.org",
-        password: "azerty",
+router.post('/signup', userCtrl.signup);
+router.post('/login', userCtrl.login);
 
-       })
-    });
-
-
-    module.exports = router;
+module.exports = router;
