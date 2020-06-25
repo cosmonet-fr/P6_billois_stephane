@@ -2,7 +2,7 @@ console.log("run sauceModel.js");
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const sauceSchema({
+const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true},
   name: { type: String, required: true,  unique:true },
   manufacturer: { type: String, required: true },

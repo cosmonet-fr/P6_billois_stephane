@@ -2,7 +2,8 @@ console.log("run app.js");
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const saucesRoutes = require('./routes/sauces.js');
+//const saucesRoutes = require('./routes/sauces.js');
+const saucesModel = require('./models/sauceModel.js');
 const userRoutes = require('./routes/user.js');
 //const userModel = require('./models/userModel.js');
 const mongoose = require('mongoose');
@@ -22,8 +23,19 @@ app.use((req, res, next) => {
   next();
 });
 
+app.post('/api/test', (req, res, next) => {
+  delete req.body._id;
+  const sauce = new saucesModel({
+    ...req.body
+  });
+  sauce.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+    .catch(error => res.status(400).json({ error }));
+});
+
+
 app.use(bodyParser.json());
 
-app.use('/api/sauces', saucesRoutes);
+//app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 module.exports = app;
