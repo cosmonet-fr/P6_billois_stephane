@@ -25,27 +25,30 @@ app.use((req, res, next) => {
 
 app.post('/api/sauces', (req, res, next) => {
 
-  const sauce = new saucesModel(
-    {
-    userId: "000",
-    name: "Pesto Rouge",
-    manufacturer: "Pesto corp",
-    description: "desc Pesto rouge.",
-    mainPepper: "Tomate",
-    imageUrl: "https://img.cuisineaz.com/400x320/2018-03-19/i136756-sauce-pesto-rouge-fait-maison.jpeg",
-    heat: 0,
-    likes: 0,
-    dislikes: 0,
-    usersLiked: ["test"],
-    usersDisliked: ["test"]
-}
-  );
+//  const sauce = new saucesModel(
+//    {
+//    userId: "000",
+//    name: "Pesto Rouge",
+//    manufacturer: "Pesto corp",
+//    description: "desc Pesto rouge.",
+//    mainPepper: "Tomate",
+//    imageUrl: "https://img.cuisineaz.com/400x320/2018-03-19/i136756-sauce-pesto-rouge-fait-maison.jpeg",
+//    heat: 0,
+//    likes: 0,
+//    dislikes: 0,
+//    usersLiked: ["test"],
+//    usersDisliked: ["test"]
+//}
+//  );
 
 
   //console.log(req.body.userId);
-  //const sauce = new saucesModel({
+  //console.log(...JSON.parse(req.body));
+  //const merde = JSON.parse(req.body);
+  console.log(saucesModel);
+  const sauce = new saucesModel({
 
-  //});
+  });
   sauce.save()
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
     .catch(error => res.status(400).json({ error }));
@@ -53,8 +56,24 @@ app.post('/api/sauces', (req, res, next) => {
 
 app.get('/api/sauces', (req, res, next) => {
   saucesModel.find()
-    .then(things => res.status(200).json(things))
+    .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(400).json({ error }));
+});
+
+app.get('/api/sauces/:id', (req, res, next) => {
+  saucesModel.findOne({
+    _id: req.params.id
+  }).then(
+    (thing) => {
+      res.status(200).json(thing);
+    }
+  ).catch(
+    (error) => {
+      res.status(404).json({
+        error: error
+      });
+    }
+  );
 });
 
 
