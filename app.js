@@ -42,13 +42,16 @@ app.post('/api/sauces', (req, res, next) => {
 //  );
 
 
-  //console.log(req.body.userId);
-  //console.log(...JSON.parse(req.body));
-  //const merde = JSON.parse(req.body);
-  console.log(saucesModel);
   const sauce = new saucesModel({
-
-  });
+    name: req.body.name,
+    manufacturer: req.body.manufacturer,
+    description: req.body.description,
+    mainPepper: req.body.mainPepper,
+    imageUrl: "https://img.cuisineaz.com/400x320/2018-03-19/i136756-sauce-pesto-rouge-fait-maison.jpeg",
+    heat: req.body.heat,
+    likes: req.body.likes
+  })
+  console.log(sauce);
   sauce.save()
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
     .catch(error => res.status(400).json({ error }));
