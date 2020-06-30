@@ -2,6 +2,7 @@ console.log("run app.js");
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
 const saucesRoutes = require('./routes/sauces.js');
 const userRoutes = require('./routes/user.js');
 const saucesModel = require('./models/Sauce.js');
