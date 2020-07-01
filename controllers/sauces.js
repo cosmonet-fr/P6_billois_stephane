@@ -88,6 +88,12 @@ if (likeStatus === 1) {
 
 if (likeStatus === -1) {
   console.log(userId+' n\'aime pas cette sauce.');
+  Sauce.updateOne(
+    { _id: thisSauceId },
+    {$push: { usersDisliked: userId }, $inc: { dislikes: +1 },}
+  )
+  .then(() => res.status(200).json({ message: 'Vous n\'aimez pas cette sauce. :-( ' }))
+  .catch((error) => res.status(400).json({ error }))
 }
 
 if (likeStatus === 0) {
