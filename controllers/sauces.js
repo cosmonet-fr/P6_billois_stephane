@@ -76,6 +76,14 @@ exports.likeOrDislikeSauce = (req, res, next) => {
 
 if (likeStatus === 1) {
   console.log(userId+' aime cette sauce.');
+  Sauce.updateOne(
+    { _id: thisSauceId },
+    {$push: { usersLiked: userId }, $inc: { likes: +1 },}
+  )
+  .then(() => res.status(200).json({ message: 'Vous aimez cette sauce. (^-^) ' }))
+  .catch((error) => res.status(400).json({ error }))
+
+
 }
 
 if (likeStatus === -1) {
