@@ -1,0 +1,29 @@
+Si userID n'est pas présent ni dans le tableau "j'aime", ni dans le tableau "je n'aime pas"
+alors variable"J'aime" = 0
+
+Si userID est présent dans le tableau "j'aime"
+alors variable"J'aime" = 1
+
+Si userID est présent dans le tableau "je n'aime pas" 
+alors variable"J'aime" = 1
+
+____________________________________________________
+
+Si variable"J'aime" === 0 
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Si varJaime === 1
+alors ajouter userId à [userLiked] de _id
+incrémenter de 1 compteur de like
+
+Si varJaime === -1
+alors ajouter userId à [userDisliked] de _id
+incrémenter de 1 compteur de dislike
+
+Si varJaime === 0
+Vérifier la présence de userId dans [userLike]
+	Si il est présent, le supprimer 
+	sinon Vérifier la présence de userId dans [userDislike]
+	alors supprimer userId de [userDislike]
