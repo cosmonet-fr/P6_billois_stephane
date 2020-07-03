@@ -70,34 +70,63 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 exports.likeOrDislikeSauce = (req, res, next) => {
+
   const likeStatus = req.body.like;
   const userId = req.body.userId;
   const thisSauceId = req.params.id;
+  Sauce.findOne({ _id: req.params.id }).then(sauce => {
 
-if (likeStatus === 1) {
-  console.log(userId+' aime cette sauce.');
-  Sauce.updateOne(
-    { _id: thisSauceId },
-    {$push: { usersLiked: userId }, $inc: { likes: +1 },}
-  )
-  .then(() => res.status(200).json({ message: 'Vous aimez cette sauce. (^-^) ' }))
-  .catch((error) => res.status(400).json({ error }))
+    console.log(sauce.usersLiked);
 
+
+    if (likeStatus === 1) {
+      console.log(userId+' aime cette sauce.');
+      Sauce.updateOne(
+        { _id: thisSauceId },
+        {$push: { usersLiked: userId }, $inc: { likes: +1 },}
+      )
+      .then(() => res.status(200).json({ message: 'Vous aimez cette sauce. (^-^) ' }))
+      .catch((error) => res.status(400).json({ error }))
+
+
+    }
+
+    if (likeStatus === -1) {
+      console.log('Vous n\'aimez pas cette sauce.');
+      Sauce.updateOne(
+        { _id: thisSauceId },
+        {$push: { usersDisliked: userId }, $inc: { dislikes: +1 },}
+      )
+      .then(() => res.status(200).json({ message: 'Vous n\'aimez pas cette sauce. :-( ' }))
+      .catch((error) => res.status(400).json({ error }))
+    }
+
+    if (likeStatus === 0) {
+      console.log('Vous annulez votre j\'aime ou j\'aime pas.');
+      const ind = sauce.usersLiked.indexOf(userId);
+      if (ind > -1) {
+        sauce.usersLiked.slice(ind, 1);
+        Sauce.updateOne(
+          { _id: thisSauceId },
+          {$push: { usersLiked: {$each: [ ], $slice: ind} }, $inc: { likes: -1 },}
+
+        )
+        .then(() => res.status(200).json({ message: ' ' }))
+        .catch((error) => res.status(400).json({ error }))
+      } else if (ind === -1) {
+        const indDisliked = sauce.usersDisliked.indexOf(userId);
+        sauce.usersDisliked.slice(indDisliked, 1);
+        Sauce.updateOne(
+          { _id: thisSauceId },
+          {$push: { usersDisliked: {$each: [ ], $slice: indDisliked} }, $inc: { dislikes: -1 },}
+
+        )
+        .then(() => res.status(200).json({ message: ' ' }))
+        .catch((error) => res.status(400).json({ error }))
+      }
+    }
+
+  });
 
 }
-
-if (likeStatus === -1) {
-  console.log(userId+' n\'aime pas cette sauce.');
-  Sauce.updateOne(
-    { _id: thisSauceId },
-    {$push: { usersDisliked: userId }, $inc: { dislikes: +1 },}
-  )
-  .then(() => res.status(200).json({ message: 'Vous n\'aimez pas cette sauce. :-( ' }))
-  .catch((error) => res.status(400).json({ error }))
-}
-
-if (likeStatus === 0) {
-  console.log(userId+' annule son j\'aime ou j\'aime pas.');
-}
-
-}
+// Si indexOf === -1 ou null Alors passer sur array Dislike sinon supr "ind"
