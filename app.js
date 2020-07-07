@@ -23,10 +23,6 @@ mongoose.connect('mongodb+srv://user:tKJqYv45KCrZYqq@cluster0-uga9w.mongodb.net/
       next();
   });
 
-//app.post('/api/sauces', (req, res, next) => {
-//  console.log(req.body);
-//next();
-//});
 
 app.use(bodyParser.json());
 
