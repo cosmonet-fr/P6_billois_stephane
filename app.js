@@ -6,9 +6,9 @@ const path = require('path');
 
 const saucesRoutes = require('./routes/sauces.js');
 const userRoutes = require('./routes/user.js');
-//const userModel = require('./models/User.js');
 
-mongoose.connect('mongodb+srv://user:tKJqYv45KCrZYqq@cluster0-uga9w.mongodb.net/data?retryWrites=true&w=majority',
+require('dotenv').config()
+mongoose.connect(process.env.DATABASE_DSN,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB Atlas réussie ! ʕ•ᴥ•ʔ'))
